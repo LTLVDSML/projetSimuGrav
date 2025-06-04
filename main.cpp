@@ -1,11 +1,16 @@
+#include <iostream>
+#include <unistd.h>
 #include <SFML/Graphics.hpp>
+#include "corps.h"
 
 // Commande pour generer executable (depuis le fichier racine du code) :
-//   g++ main.cpp -o sfml_demo -lsfml-graphics -lsfml-window -lsfml-system
+//   g++ main.cpp corps.cpp -o gravite
 // Commande pour lancer l'executable (depuis le fichier racine de l'executable) :
-//   ./sfml_demo
+//   ./gravite
 
-int main()
+// EXEMPLE///////////////////////////////////////////////////////////////
+
+/*int main()
 {
     // Crée une fenêtre de 800x600
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Demo");
@@ -37,4 +42,45 @@ int main()
     }
 
     return 0;
+}*/
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+int main() {
+    corps terre;
+    terre.nom          = "terre";
+    terre.fixe         = false;
+    terre.nonInfluence = false;
+    terre.masse        = 10;
+    terre.positionX    = 5;
+    terre.positionY    = 5;
+    terre.vitesseX     = 0;
+    terre.vitesseY     = 0;
+
+    terre.sommeVitesseX = 0;
+
+    corps lune;
+    lune.nom          = "lune";
+    lune.fixe         = false;
+    lune.nonInfluence = false;
+    lune.masse        = 1;
+    lune.positionX    = 1;
+    lune.positionY    = 1;
+    lune.vitesseX     = 0;
+    lune.vitesseY     = 0;
+
+    lune.sommeVitesseX = 0;
+
+
+    for (int idx = 0; idx < 100; idx++) {
+        std::cout << idx << std::endl;
+        terre.mouvement(lune);
+        lune.mouvement(terre);
+        sleep(1);
+    }
+
+    return 0;
+
 }
+
