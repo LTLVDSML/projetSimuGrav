@@ -7,7 +7,7 @@ corps::corps() {}
 void corps::mouvement(corps &cible) {
        
     // const float G = 6.67e-11f;
-    const float G = 6.67e-3f;
+    const float G = 6.67e-11f;
 
     float distanceX = cible.positionX - positionX;
     float distanceY = cible.positionY - positionY;

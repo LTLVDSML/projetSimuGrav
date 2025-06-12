@@ -4,7 +4,7 @@
 #include "corps.h"
 
 // Commande pour generer executable (depuis le fichier racine du code) :
-//   g++ main.cpp corps.cpp -o gravite
+//   g++ main.cpp corps.cpp -o gravite -lsfml-graphics -lsfml-window -lsfml-system
 // Commande pour lancer l'executable (depuis le fichier racine de l'executable) :
 //   ./gravite
 
@@ -52,34 +52,62 @@ int main() {
     terre.nom          = "terre";
     terre.fixe         = false;
     terre.nonInfluence = false;
-    terre.masse        = 10;
-    terre.positionX    = 5;
-    terre.positionY    = 5;
-    terre.vitesseX     = 0;
+    terre.masse        = 10000000;
+    terre.positionX    = 100;
+    terre.positionY    = 100;
+    terre.vitesseX     = 1e-3;
     terre.vitesseY     = 0;
-
-    terre.sommeVitesseX = 0;
 
     corps lune;
     lune.nom          = "lune";
     lune.fixe         = false;
     lune.nonInfluence = false;
-    lune.masse        = 1;
-    lune.positionX    = 1;
-    lune.positionY    = 1;
+    lune.masse        = 1000000;
+    lune.positionX    = 600;
+    lune.positionY    = 550;
     lune.vitesseX     = 0;
-    lune.vitesseY     = 0;
-
-    lune.sommeVitesseX = 0;
+    lune.vitesseY     = -1e-3;
 
 
-    for (int idx = 0; idx < 100; idx++) {
-        std::cout << idx << std::endl;
+    // Crée une fenêtre 
+    sf::RenderWindow window(sf::VideoMode(1100, 600), "gravite");
+    // Crée des cercles pour les planetes
+    sf::CircleShape earth(20);
+    earth.setFillColor(sf::Color::Blue);
+    earth.setPosition(terre.positionX, terre.positionY);
+    sf::CircleShape moon(10);
+    moon.setFillColor(sf::Color::White);
+    moon.setPosition(lune.positionX, lune.positionY);
+
+
+    // Boucle de calcul
+    while (window.isOpen())
+    {
+        // Gestion fermeture
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // Fermer la fenêtre si on clique sur la croix
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
         terre.mouvement(lune);
         lune.mouvement(terre);
-        sleep(1);
-    }
+        sleep(0.01);
 
+        // Affichage planetes
+        earth.setPosition(terre.positionX, terre.positionY);
+        moon.setPosition(lune.positionX, lune.positionY);
+        // Efface la fenêtre (fond noir)
+        window.clear();
+        // Dessine les planetes
+        window.draw(earth);
+        window.draw(moon);
+        // Affiche le contenu à l'écran
+        window.display();
+
+    }
     return 0;
 
 }
