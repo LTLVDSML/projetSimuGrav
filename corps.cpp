@@ -1,36 +1,52 @@
 #include <iostream>
+#include <bits/stdc++.h>
 #include <cmath>
+#include <SFML/Graphics.hpp>
 #include "corps.h"
+
+using namespace std;
 
 corps::corps() {}
 
-void corps::mouvement(corps &cible) {
-       
-    // const float G = 6.67e-11f;
-    const float G = 6.67e-11f;
+void corps::acceleration(corps, std::list<corps>&listeCibles){
+    accelerationX = 0;
+    accelerationY = 0;
 
-    float distanceX = cible.positionX - positionX;
-    float distanceY = cible.positionY - positionY;
-    float distance = sqrt(pow(distanceX,2)+pow(distanceX,2));
+    for (auto& it : listeCibles) {
+        //const float G = 6.67e-11f;
+        const float G = 6.67e-7f;
+        float distanceX = it.positionX - positionX;
+        float distanceY = it.positionY - positionY;
+        float distance = sqrt(pow(distanceX,2)+pow(distanceY,2));
 
-    if (distance == 0) return; // évite division par zéro
-    
-    float acceleration = (G * cible.masse)/pow(distance,2);
-    
-    float cos = distanceX/distance;
-    float sin = distanceY/distance;
+        // Detection du cas ou il s'agit de la meme planete
+        if (&it != this && distance !=0) {
+            float acc = (G * it.masse)/pow(distance,2);
 
-    float accX = acceleration * cos;
-    float accY = acceleration * sin;
+            float cos = distanceX/distance;
+            float sin = distanceY/distance;
 
-    vitesseX = vitesseX + accX;
-    vitesseY = vitesseY + accY;
+            float accX = acc * cos;
+            float accY = acc * sin;
+
+            accelerationX = accelerationX + accX;
+            accelerationY = accelerationY + accY;
+        }
+
+    }
+
+}
+
+void corps::mouvement(corps) {
+
+    vitesseX = vitesseX + accelerationX;
+    vitesseY = vitesseY + accelerationY;
 
     positionX = positionX + vitesseX;
     positionY = positionY + vitesseY;
 
     std::cout << nom << " → position : (" << positionX << ", " << positionY << ")\n";
     std::cout << nom << " → vitesse : (" << vitesseX << ", " << vitesseY << ")\n";
-    std::cout << nom << " → acceleration : (" << accX << ", " << accY << ")\n";
+    std::cout << nom << " → acceleration : (" << accelerationX << ", " << accelerationY << ")\n";
 
 }
