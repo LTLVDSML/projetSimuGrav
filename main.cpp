@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bits/stdc++.h>
+#include <math.h>
 #include <unistd.h>
 #include <SFML/Graphics.hpp>   // sfml-2.6.2-1
 #include <SFML/Window/Keyboard.hpp>
@@ -20,8 +21,8 @@ int main() {
     terre.fixe         = false;
     terre.nonInfluence = false;
     terre.masse        = 1000000;
-    terre.positionX    = 600;
-    terre.positionY    = 350;
+    terre.positionX    = 0;
+    terre.positionY    = 0;
     terre.vitesseX     = 0;
     terre.vitesseY     = 0;
     terre.vitesseY     = 0;
@@ -33,8 +34,8 @@ int main() {
     lune.fixe         = false;
     lune.nonInfluence = false;
     lune.masse        = 100000;
-    lune.positionX    = 150;
-    lune.positionY    = 350;
+    lune.positionX    = -500;
+    lune.positionY    = 0;
     lune.vitesseX     = 0;
     lune.vitesseY     = 0.03;
     lune.rayon        = 10;
@@ -61,7 +62,9 @@ int main() {
     //listCorps.push_back(mars);
 
     // Crée une fenêtre 
-    sf::RenderWindow window(sf::VideoMode(1366, 768), "gravite");
+    int largeur = 1366;
+    int hauteur = 768;
+    sf::RenderWindow window(sf::VideoMode(largeur, hauteur), "gravite");
     window.requestFocus();	
     ecran fenetre;
 
@@ -96,12 +99,17 @@ int main() {
         window.clear();  
 
         // Deplacement et dessin des corps
+        float coordX;
+        float coordY;
         for (auto& it : listCorps) {
             it.acceleration(it, listCorps);
             it.mouvement(it);
 
             // Dessin des corps
-            it.figure.setPosition(it.positionX + fenetre.positionX, it.positionY + fenetre.positionY);
+            coordX = ((float)it.positionX + (float)fenetre.positionX) * fenetre.grandissement + largeur/2;
+            coordY = ((float)it.positionY + (float)fenetre.positionY) * fenetre.grandissement + hauteur/2;
+
+            it.figure.setPosition(nearbyint(coordX), nearbyint(coordY));
             window.draw(it.figure);
         }
 
@@ -117,6 +125,13 @@ int main() {
         };
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
             fenetre.deplacement(0, -5);
+        };
+        // Detection zoom
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)){
+            fenetre.zoom(0.1);
+        };
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)){
+            fenetre.zoom(-0.1);
         };
 
 

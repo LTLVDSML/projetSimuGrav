@@ -45,8 +45,10 @@ void corps::mouvement(corps) {
     positionX = positionX + vitesseX;
     positionY = positionY + vitesseY;
 
+    /*
     std::cout << nom << " → position : (" << positionX << ", " << positionY << ")\n";
     std::cout << nom << " → vitesse : (" << vitesseX << ", " << vitesseY << ")\n";
     std::cout << nom << " → acceleration : (" << accelerationX << ", " << accelerationY << ")\n";
+    */
 
 }

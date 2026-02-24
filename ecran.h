@@ -8,12 +8,14 @@ public:
     // caracteristiques
     int positionX;
     int positionY;
+    float grandissement;
 
     // constructeur
     ecran();
 
     // methodes
     void deplacement (int dX, int dY);
+    void zoom (float dA);
 
 };
 
