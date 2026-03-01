@@ -15,7 +15,7 @@ public:
 
     // methodes
     void deplacement (int dX, int dY);
-    void zoom (float dA);
+    void zoom (char dA);
 
 };
 

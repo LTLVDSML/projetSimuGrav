@@ -10,9 +10,14 @@ void ecran::deplacement(int dX, int dY){
     positionY = positionY + dY;
 }
 
-void ecran::zoom(float dA){
-    if (grandissement + dA > 0.1){
-    grandissement = grandissement + dA;
+void ecran::zoom(char dA){
+    // Vers l'avant
+    if (dA == 1){
+    grandissement = grandissement * 0.9;
     }
-    std::cout << grandissement << "\n";
+    // Vers l'arriere
+    else if (dA == 0){
+    grandissement = grandissement * 1.1;
+    }
+    // std::cout << grandissement << "\n";
 }

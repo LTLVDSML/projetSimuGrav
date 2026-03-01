@@ -25,7 +25,6 @@ int main() {
     terre.positionY    = 0;
     terre.vitesseX     = 0;
     terre.vitesseY     = 0;
-    terre.vitesseY     = 0;
     terre.rayon        = 20;
     terre.couleur      = "bleu";
 
@@ -70,7 +69,7 @@ int main() {
 
     // generation des caracteristiques des corps
     for (auto& it : listCorps) {
-        it.figure.setRadius(it.rayon);
+        it.figure.setRadius(it.rayon * fenetre.grandissement);
         // Couleur
         if (it.couleur == "blanc") {
             it.figure.setFillColor(sf::Color::White);
@@ -102,6 +101,9 @@ int main() {
         float coordX;
         float coordY;
         for (auto& it : listCorps) {
+            // Changement rayons corps avec grossissement 
+            it.figure.setRadius(it.rayon * fenetre.grandissement);
+
             it.acceleration(it, listCorps);
             it.mouvement(it);
 
@@ -126,12 +128,13 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
             fenetre.deplacement(0, -5);
         };
-        // Detection zoom
+        // Detection zoom vers haut
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)){
-            fenetre.zoom(0.1);
+            fenetre.zoom((char)1);
         };
+        // Detection zoom vers bas
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)){
-            fenetre.zoom(-0.1);
+            fenetre.zoom((char)0);
         };
 
 
